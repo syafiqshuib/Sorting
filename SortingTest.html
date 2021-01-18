@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      text-align: center;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#addBtn").click(function () {
+        var userid = $("#userId").val();
+        var username = $("#userName").val();
+        var userOcc = $("#userOcc").val();
+
+        if (username == "") {
+          alert("Username can't be blank.");
+        } else if (userOcc == "") {
+          alert("Occupation can't be blank.");
+        } else {
+          var row =
+            "<tr><td class='col-userid'>" +
+            userid +
+            "</td><td class='col-username'>" +
+            username +
+            "</td><td class='col-useroccupation'>" +
+            userOcc +
+            "</td></tr>";
+          $("table tbody").append(row);
+          $("#userId").val(parseInt($("#userId").val()) + 1);
+          $(".input").val("");
+        }
+      });
+
+      $("#myselect").on("change", function () {
+        sort(this.value);
+      });
+
+      function sort(value) {
+        var row = $("table tbody tr").toArray();
+        if (value === "UserID") {
+          row.sort(function (a, b) {
+            var numA = parseInt($("td.col-userid", a).text(), 10);
+            var numB = parseInt($("td.col-userid", b).text(), 10);
+            return numA - numB;
+          });
+        } else if (value === "UserName") {
+          row.sort(function (a, b) {
+            var txtA = $("td.col-username", a).text();
+            var txtB = $("td.col-username", b).text();
+            return txtA.localeCompare(txtB);
+          });
+        } else {
+          row.sort(function (a, b) {
+            var txtA = $("td.col-useroccupation", a).text();
+            var txtB = $("td.col-useroccupation", b).text();
+            return txtA.localeCompare(txtB);
+          });
+        }
+
+        for (var i = 0; i < row.length; i++) {
+          $("table tbody").append(row[i]);
+        }
+      }
+    });
+  </script>
+  <body>
+    <form>
+      <input
+        type="number"
+        id="userId"
+        placeholder="Userid"
+        value="1"
+        disabled
+      />
+      <input type="text" id="userName" class="input" placeholder="Username" />
+      <input type="text" id="userOcc" class="input" placeholder="Occupation " />
+      <input type="button" id="addBtn" value="Add Row" />
+    </form>
+    <br />
+    <label for="cars">Sort by:</label>
+    <select id="myselect">
+      <option value="UserID ">UserID</option>
+      <option value="UserName">UserName</option>
+      <option value="UserOccupation">UserOccupation</option></select
+    ><br /><br /><br /><br /><br />
+    <table style="width: 50%">
+      <thead>
+        <tr>
+          <th>Userid</th>
+          <th>Username</th>
+          <th>Occupation</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </body>
+</html>
